@@ -6,5 +6,9 @@
   {
     "name": "Tarea 2",
     "description": "Otra descripción"
+  },
+  {
+    "name": "hola",
+    "description": "prueba de creacion de tarea"
   }
 ]
