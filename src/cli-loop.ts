@@ -53,7 +53,16 @@ function showUsage() {
  * Reads tasks from the file and logs them to the console.
  */
 function showTasks(): void {
-  // TODO
+  const tasks = readTasks();
+  if (tasks.length === 0) {
+    console.log("No tasks found.");
+    return;
+  }
+
+  tasks.forEach((task, index) => {
+    console.log(`${index} - ${task.name}: ${task.description || "No description"}`);
+  });
+  console.table(tasks); //Mucho mas sencillo y bonito que el foreach
 }
 
 /**
