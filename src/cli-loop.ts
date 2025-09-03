@@ -19,12 +19,14 @@ export function main() {
     switch (args[0]) {
       case "":
       case "help":
+        showUsage();
         break;
       case "read-all":
         showTasks();
+        showUsage();
         break;
       case "filter":
-        showTasksByName(args[1]);
+        showTasksByName();
         break;
       case "create":
         creationMenu();
@@ -38,15 +40,14 @@ export function main() {
         return;
       default:
         console.log("Unknown command");
+        showUsage();
         break;
     }
-
-    showUsage();
   });
 }
 
 function showUsage() {
-  console.log("Commands: help, read-all, filter 'argument', create, delete, exit");
+  console.log("Commands: help, read-all, filter, create, delete, exit");
 }
 
 /**
@@ -69,22 +70,19 @@ function showTasks(): void {
  * Asks the user for a name and filters tasks that contain that name, then
  * console.log it.
  */
-function showTasksByName(name?: string): void {
-  const tasks = readTasks();
+function showTasksByName(): void {
+  rl.question("Escribe el nombre que quieres filtrar: ", (name) => {
+    const tasks = readTasks();
+    const results =  tasks.filter(task => task.name.toLowerCase().includes(name.toLowerCase()));
 
-  if(!name) {
-    console.log("Por favor escribe un nombre que quieras filtrar despues de 'filter'");
-    return;
-  }
-
-  const results = tasks.filter(task => task.name.includes(name));
-
-  if (results.length > 0) {
-    console.log("Coincidencias:");
-    results.forEach(t => console.log(`- ${t.name}: ${t.description}`));
+  if (results.length === 0) {
+    console.log("No se han encontrado coincidencias:");
   } else {
-    console.log("No se han encontrado coincidencias");
+    results.forEach(task => {
+      console.log(`${task.name} - ${task.description}`);
+    });
   }
+});
 }
 
 /**
