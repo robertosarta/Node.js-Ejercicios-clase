@@ -24,7 +24,7 @@ export function main() {
         showTasks();
         break;
       case "filter":
-        showTasksByName();
+        showTasksByName(args[1]);
         break;
       case "create":
         creationMenu();
@@ -46,7 +46,7 @@ export function main() {
 }
 
 function showUsage() {
-  console.log("Commands: help, read-all, filter, create, delete, exit");
+  console.log("Commands: help, read-all, filter 'argument', create, delete, exit");
 }
 
 /**
@@ -69,8 +69,22 @@ function showTasks(): void {
  * Asks the user for a name and filters tasks that contain that name, then
  * console.log it.
  */
-function showTasksByName(): void {
-  // TODO
+function showTasksByName(name?: string): void {
+  const tasks = readTasks();
+
+  if(!name) {
+    console.log("Por favor escribe un nombre que quieras filtrar despues de 'filter'");
+    return;
+  }
+
+  const results = tasks.filter(task => task.name.includes(name));
+
+  if (results.length > 0) {
+    console.log("Coincidencias:");
+    results.forEach(t => console.log(`- ${t.name}: ${t.description}`));
+  } else {
+    console.log("No se han encontrado coincidencias");
+  }
 }
 
 /**
